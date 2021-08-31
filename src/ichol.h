@@ -657,8 +657,11 @@ class supcol_ichol_solver
       }
     }
 
-    const T *A = &(*SLT_.block_)[VAL[begin]];
-    cblas_dgemv(CblasColMajor, CblasNoTrans, numI, M, -1, A, numI, v.data(), 1, 1, &x[head_I], 1);      
+    if ( M > 0 ) {
+      // M == 0 does nothing here
+      const T *A = &(*SLT_.block_)[VAL[begin]];
+      cblas_dgemv(CblasColMajor, CblasNoTrans, numI, M, -1, A, numI, v.data(), 1, 1, &x[head_I], 1);
+    }
 
     const T *Uii = &(*SLT_.block_)[VAL[begin-1]];
     cblas_dtrsv(CblasColMajor, CblasUpper, CblasNoTrans, CblasNonUnit, numI, Uii, numI, &x[head_I], 1);

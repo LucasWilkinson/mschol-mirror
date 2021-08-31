@@ -11,4 +11,5 @@ add_executable(solve_problem_3d solve_problem_3d.cc)
 target_link_libraries(solve_problem_3d
   mschol
   ${GMP_LIBRARIES}
+  ${SuiteSparse_LIBRARIES}
   )

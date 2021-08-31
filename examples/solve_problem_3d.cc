@@ -119,7 +119,7 @@ class tet_elasticity : public pde_problem
   tet_elasticity(const mati_t &tets, const matd_t &nods, const matd_t &mtrl)
       : dim_(nods.size()), tets_(tets), nods_(nods), lame_(mtrl) {
     ASSERT(tets.rows() == 4 && nods.rows() == 3 && mtrl.rows() == 2 && tets.cols() == mtrl.cols());
-    vol_.resize(1, tets_.cols());
+    vol_.resize(tets_.cols());
     Dm_.resize(9, tets_.cols());
 
     #pragma omp parallel for
@@ -358,12 +358,14 @@ int main(int argc, char *argv[])
   } else if ( prec_name == "amg" ) {
     const size_t nrelax = 1, cycle_maxits = 1;
     cg_prec = std::make_shared<amg_precon>(nrelax, cycle_maxits);
+  } else if ( prec_name == "cholmod" ) {
+    cg_prec = std::make_shared<cholmod_precon>();
   } else {
     bool invalid_preconditioner_type = 0;
     ASSERT(invalid_preconditioner_type);
   }
   hrt.stop();
-  double pre_time = hrt.duration();
+  double pre_time = hrt.duration()/1000; // ms to s
   spdlog::info("precompute time: {}", pre_time);
 
   precond_cg_solver pcg(cg_prec);

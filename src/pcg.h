@@ -3,6 +3,7 @@
 
 #include <fstream>
 #include <Eigen/Sparse>
+#include <Eigen/CholmodSupport>
 #include <amgcl/amg.hpp>
 #include <amgcl/backend/builtin.hpp>
 #include <amgcl/coarsening/smoothed_aggregation.hpp>
@@ -52,6 +53,24 @@ class amg_precon : public preconditioner
   
   std::shared_ptr<AMG_t> slv_;
   AMG_t::params prm_;
+};
+
+class cholmod_precon : public preconditioner
+{
+ public:
+  int analyse_pattern(const MatrixType &mat) {
+    llt_.analyzePattern(mat);
+    return llt_.info();
+  }
+  int factorize(const MatrixType &mat, const bool verbose=true) {
+    llt_.factorize(mat);
+    return llt_.info();
+  }
+  VectorType solve(const VectorType &rhs) {
+    return llt_.solve(rhs);
+  }
+ private:
+  Eigen::CholmodSupernodalLLT<MatrixType> llt_;
 };
 
 class precond_cg_solver
