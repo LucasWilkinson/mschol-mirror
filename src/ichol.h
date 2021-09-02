@@ -5,10 +5,18 @@
 #include <fstream>
 #include <Eigen/Sparse>
 #include <spdlog/spdlog.h>
-#include <cblas.h>
 #include <set>
 #include <unordered_set>
 #include <bitset>
+
+// TODO: clean this up?
+// Include the correct BLAS
+#ifdef MKL
+#include <mkl_cblas.h>
+#else
+#include <cblas.h>
+#endif
+
 
 #include "timer.h"
 
