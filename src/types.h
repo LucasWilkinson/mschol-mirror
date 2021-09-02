@@ -7,8 +7,8 @@ namespace mschol {
 
 typedef Eigen::Matrix<size_t, -1, -1> mati_t;
 typedef Eigen::Matrix<double, -1, -1> matd_t;
-typedef Eigen::Matrix<size_t, -1,  1> veci_t;
-typedef Eigen::Matrix<double, -1,  1> vecd_t;
+typedef Eigen::Matrix<size_t, 1,  -1> veci_t;
+typedef Eigen::Matrix<double, 1,  -1> vecd_t;
 
 }
 

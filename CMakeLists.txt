@@ -13,19 +13,19 @@ if(Boost_FOUND)
   include_directories(${Boost_INCLUDE_DIRS})
 endif(Boost_FOUND)
 
-# SuiteSparse
-find_package(SuiteSparse REQUIRED)
-if(SuiteSparse_FOUND)
-  message("-- SuiteSparse @ ${SuiteSparse_INCLUDE_DIRS}")
-  message("-- SuiteSparse libs @ ${SuiteSparse_LIBRARIES}")
-  include_directories(${SuiteSparse_INCLUDE_DIRS})
-endif(SuiteSparse_FOUND)
-
 # HEADER-ONLY LIBS
 include_directories(external/amgcl/)
 include_directories(external/eigen/)
 include_directories(external/CGAL/include)
 include_directories(external/spdlog/include)
+
+# SuiteSparse
+set(SUITESPARSE_INCLUDE_DIR_HINTS $ENV{SUITESPARSE_INC})
+set(SUITESPARSE_LIBRARY_DIR_HINTS $ENV{SUITESPARSE_LIB})
+find_package(SuiteSparse REQUIRED)
+
+message(STATUS "${SUITESPARSE_LIBRARIES}")
+link_libraries(${SUITESPARSE_LIBRARIES})
 
 add_subdirectory(src)
 add_subdirectory(examples)
